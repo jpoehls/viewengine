@@ -7,6 +7,34 @@ TODO
 - Lots of docs and examples.
 */
 
+/*
+Content sections in master pages must be named with a __ prefix.
+*What happens if they aren't?*
+
+EXAMPLES
+- Nested master pages
+	master 1 (include a partial)
+	master 2 (using master 1, include another partial)
+	content page (using master 2, include another partial)
+- Master page
+	master (include a partial)
+	content page (using master, include another partial)
+- Including a partial
+	content page (no master, include a partial)
+- Rendering a partial or simple view
+	partial (no master, no other partials)
+- Master pages with optional content placeholders
+	master (defines two optional_template sections)
+	content page (using master, only fills one of the optionals)
+- Passing data to a view
+	master (uses some data)
+	content page (using master, uses some data)
+
+- Parsing all view files in a folder, recursive (glob)
+- Parsing specific view files
+- Parsing views from strings
+*/
+
 package viewengine
 
 import (
