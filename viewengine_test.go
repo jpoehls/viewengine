@@ -112,6 +112,23 @@ func Test_NestedMasterPage(t *testing.T) {
 		t.Logf("\"%s\"", out)
 		t.Fatal("Rendered template is incorrect.")
 	}
+
+	/*
+		This test is failing because the masterpage_inner
+		is considered a 'page' due to it defining the __body
+		content section.
+
+		Currently only one page can be rendered at a time.
+		We take the page being rendered (which must be the
+		top level template being executed) and then add
+		all of the partials to a new template set with it.
+		Then we render that page as part of the set.
+
+		This needs to change. Pages should be able to include
+		other pages in order to make a nested master page scenario
+		work. If a content section template is defined twice then
+		an error should be thrown.
+	*/
 }
 
 func Test_MasterPageWithOptionalSections(t *testing.T) {
@@ -140,10 +157,10 @@ func Test_MasterPageWithOptionalSections(t *testing.T) {
 	<body>
 		<h1>Page header</h1>
 		<p>Page content here.</p>
-
+		
 	</body>
 </html>` {
-		t.Logf("\"%s\"", out)
+		t.Logf("\"%s\"", showWhitespace(out))
 		t.Fatal("Rendered template is incorrect.")
 	}
 }

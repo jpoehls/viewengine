@@ -8,14 +8,18 @@ TODO
 */
 
 /*
+.gohtml, .gomaster
+.gohtml can {{template ""}} include other .gohtml files and .gomaster files
+.gomaster can {{template ""}} include other .gohtml files
+*/
+
+/*
 Content sections in master pages must be named with a __ prefix.
 *What happens if they aren't?*
 
 EXAMPLES
-- Nested master pages
-	master 1 (include a partial)
-	master 2 (using master 1, include another partial)
-	content page (using master 2, include another partial)
+- CANNOT use nested master pages.
+- CANNOT include a page that uses a master page inside another page.
 - Master page
 	master (include a partial)
 	content page (using master, include another partial)
@@ -61,6 +65,10 @@ type ViewEngine struct {
 	// A page is any view that DOES
 	// define a content section.
 	// Example: {{define "__sectionName"}} ... {{end}}
+	//
+	// We can't include pages in the partials template set
+	// because they will likely define duplicate content
+	// section templates such as __header, etc.
 	pages map[string]map[string]*parse.Tree
 
 	mu sync.Mutex
