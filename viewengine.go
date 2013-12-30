@@ -11,6 +11,20 @@ TODO
 .gohtml, .gomaster
 .gohtml can {{template ""}} include other .gohtml files and .gomaster files
 .gomaster can {{template ""}} include other .gohtml files
+
+Parse - add view with specified name and code
+ParseFiles - add all views from given file names
+ParseGlob - add all views matching given glob
+
+- Get parse tree of template.
+- If any templates are {{define}}'d then change their
+  name to be prefixed with the top-level template name.
+  (So that pages can {{define "head"}}, "body", etc.)
+- Get names of all templates it references.
+- Store the parse tree along with the list of template names referenced.
+- Execute should add the named template and all of its dependencies
+  to a template and then render it.
+- Cache templates created during execution.
 */
 
 /*
@@ -53,9 +67,11 @@ import (
 	"text/template/parse"
 )
 
-// Prefix used to determine whether a template
-// is a page content section.
-const contentSectionPrefix = "__"
+// Suffix used by master page file names.
+// The Parse* functions will use this suffix
+// to determine whether the file is a regular view
+// or a master page view.
+var MasterPageSuffix = ".master.gohtml"
 
 type ViewEngine struct {
 	// A partial is any view that DOES NOT
@@ -144,8 +160,8 @@ func (ve *ViewEngine) Parse(name, src string) (*ViewEngine, error) {
 }
 
 // ParseFiles parses the template definitions from the named files.
-// The template's name will have the (base) name and
-// (parsed) contents of the file. There must be at least one file.
+// There must be at least one file.
+// *.gohtml
 func (ve *ViewEngine) ParseFiles(root string, filenames ...string) (*ViewEngine, error) {
 	if len(filenames) == 0 {
 		// Not really a problem, but be consistent.

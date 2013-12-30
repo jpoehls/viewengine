@@ -1,0 +1,12 @@
+
+{{define "!body"}}
+<html>
+	<head>
+		{{ template "~head" . }}
+	</head>
+	<body>
+		{{ template "~body" . }}
+	</body>
+</html>
+{{end}}
+{{template "test_views/views/simple/site2.master.gohtml" .}}

@@ -1,0 +1,10 @@
+{{ define "~head" }}
+header 2 content
+{{ end }}
+
+{{ define "~body" }}
+body 2 content
+{{ template "test_views/views/simple/usercontrol.gohtml" }}
+{{ end }}
+
+{{ template "test_views/views/simple/site.master.gohtml" . }}
